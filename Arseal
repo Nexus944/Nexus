@@ -1,0 +1,330 @@
+-- Arsenal Script Hub with Orion UI Library
+-- Premium key available at: https://discord.gg/mMAUJeT3N8
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Arsenal Script Hub", HidePremium = false, SaveConfig = true, ConfigFolder = "ArsenalScripts"})
+
+-- Key System Variables
+local KeySystem = true
+local NormalKey = "FreeKey123"
+local PremiumKey = "PremiumKey456" -- This would be obtained from Discord: https://discord.gg/mMAUJeT3N8
+local KeyChecked = false
+local IsPremium = false
+
+-- Key System Tab
+local KeyTab = Window:MakeTab({
+    Name = "Key System",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+KeyTab:AddLabel("Enter Key to Access Script Hub")
+KeyTab:AddLabel("Get Premium Key from Discord: discord.gg/mMAUJeT3N8")
+
+local KeyInput = KeyTab:AddTextbox({
+    Name = "Enter Key",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Value)
+        if Value == NormalKey then
+            KeyChecked = true
+            IsPremium = false
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Normal key accepted! Access granted.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        elseif Value == PremiumKey then
+            KeyChecked = true
+            IsPremium = true
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Premium key accepted! Premium features unlocked.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Invalid key! Try again or get a key from Discord.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end
+})
+
+-- Main Features Tab
+local MainTab = Window:MakeTab({
+    Name = "Main Features",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- ESP Features
+local ESPTab = Window:MakeTab({
+    Name = "ESP Features",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Aimbot Features
+local AimbotTab = Window:MakeTab({
+    Name = "Aimbot",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Gun Mods
+local GunModsTab = Window:MakeTab({
+    Name = "Gun Mods",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Premium Features
+local PremiumTab = Window:MakeTab({
+    Name = "Premium Features",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = true
+})
+
+-- Main Features
+MainTab:AddButton({
+    Name = "Check Key Status",
+    Callback = function()
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        elseif IsPremium then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Premium access granted! All features unlocked.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Normal access granted. Premium features locked.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end
+})
+
+MainTab:AddToggle({
+    Name = "Infinite Jump",
+    Default = false,
+    Save = true,
+    Flag = "InfJump",
+    Callback = function(Value)
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            return
+        end
+        
+        getgenv().InfiniteJump = Value
+        
+        if Value then
+            local InfiniteJumpConnection
+            InfiniteJumpConnection = game:GetService("UserInputService").JumpRequest:Connect(function()
+                if getgenv().InfiniteJump then
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+                else
+                    InfiniteJumpConnection:Disconnect()
+                end
+            end)
+        end
+    end
+})
+
+MainTab:AddSlider({
+    Name = "WalkSpeed",
+    Min = 16,
+    Max = 500,
+    Default = 16,
+    Color = Color3.fromRGB(255, 255, 255),
+    Increment = 1,
+    ValueName = "Speed",
+    Callback = function(Value)
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            return
+        end
+        
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    end    
+})
+
+-- ESP Features
+ESPTab:AddToggle({
+    Name = "Player ESP",
+    Default = false,
+    Save = true,
+    Flag = "PlayerESP",
+    Callback = function(Value)
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            return
+        end
+        
+        -- ESP Code would go here
+        if Value then
+            OrionLib:MakeNotification({
+                Name = "Feature",
+                Content = "Player ESP Enabled",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Feature",
+                Content = "Player ESP Disabled",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+ESPTab:AddToggle({
+    Name = "Box ESP",
+    Default = false,
+    Save = true,
+    Flag = "BoxESP",
+    Callback = function(Value)
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            return
+        end
+        
+        -- Box ESP Code would go here
+        if Value then
+            OrionLib:MakeNotification({
+                Name = "Feature",
+                Content = "Box ESP Enabled",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Feature",
+                Content = "Box ESP Disabled",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Aimbot Features
+AimbotTab:AddToggle({
+    Name = "Aimbot",
+    Default = false,
+    Save = true,
+    Flag = "Aimbot",
+    Callback = function(Value)
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            return
+        end
+        
+        -- Aimbot Code would go here
+        if Value then
+            OrionLib:MakeNotification({
+                Name = "Feature",
+                Content = "Aimbot Enabled",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Feature",
+                Content = "Aimbot Disabled",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+AimbotTab:AddDropdown({
+    Name = "Aimbot Target",
+    Default = "Head",
+    Options = {"Head", "Torso", "Random"},
+    Callback = function(Value)
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            return
+        end
+        
+        -- Aimbot Target Code would go here
+        OrionLib:MakeNotification({
+            Name = "Feature",
+            Content = "Aimbot Target set to: " .. Value,
+            Image = "rbxassetid://4483345998",
+            Time = 3
+        })
+    end    
+})
+
+-- Gun Mods
+GunModsTab:AddToggle({
+    Name = "No Recoil",
+    Default = false,
+    Save = true,
+    Flag = "NoRecoil",
+    Callback = function(Value)
+        if not KeyChecked then
+            OrionLib:MakeNotification({
+                Name = "Key System",
+                Content = "Please enter a valid key first!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            return
+        end
+        
+        -- No Recoil Code would go here
+        if Value then
+            OrionLib:MakeNotification({
+                Name = "Feature",
+                Content = "No Recoil Enabled",
+                Imag
